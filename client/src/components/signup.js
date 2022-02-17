@@ -1,8 +1,10 @@
 import React, {useState} from "react";
-import { Form, Button, Alert} from "react-bootstrap"
+import { Form, Button} from "react-bootstrap"
 import WorkoutConns from "../connection/connection";
+import { useNavigate} from "react-router-dom";
+
 const Signup = () =>{
-    
+    let navigate = useNavigate();
     const [error, setError] = useState(null)
     const errorDiv = error 
         ? 
@@ -27,11 +29,7 @@ const Signup = () =>{
         WorkoutConns.signup(JSON.stringify(user))
             .then(res => {
                 console.log(res);
-                var valuser = {
-                    email: email,
-                    password: password
-                }
-                WorkoutConns.signin(JSON.stringify(valuser))
+                navigate(`/${user.name}`, {state: user.name})
             })
             .catch(err => {
                 setError(err.message);

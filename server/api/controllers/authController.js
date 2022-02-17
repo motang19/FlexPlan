@@ -68,13 +68,10 @@ exports.signup = (req, res, next) => {
   })
 }
 exports.signin = (req, res) => {
-     let { email, password } = req.body;
+     let { name, password } = req.body;
      let errors = [];
-     if (!email) {
-       errors.push({ email: "required" });
-     }
-     if (!emailRegexp.test(email)) {
-       errors.push({ email: "invalid email" });
+     if (!name) {
+       errors.push({ name: "required" });
      }
      if (!password) {
        errors.push({ passowrd: "required" });
@@ -82,7 +79,7 @@ exports.signin = (req, res) => {
      if (errors.length > 0) {
       return res.status(422).json({ errors: errors });
      }
-     User.findOne({ email: email }).then(user => {
+     User.findOne({ name: name }).then(user => {
         if (!user) {
           return res.status(404).json({
             errors: [{ user: "not found" }],

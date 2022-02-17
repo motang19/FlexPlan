@@ -1,14 +1,33 @@
-import React from "react";
-import {Navbar, Nav, Container, NavDropdown, Offcanvas} from "react-bootstrap";
+import {React, useState, useEffect} from "react";
+import {Navbar, Nav, Container, Button, Offcanvas} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {Routes, Route, Link} from "react-router-dom";
+import {Routes, Route, Link, useNavigate, Navigate, useLocation} from "react-router-dom";
 
 import Home from "./components/home";
 import Signup from "./components/signup";
 import Signin from "./components/signin";
+import User from "./components/user";
+import UserCurrent from "./components/userCurrent";
+import UserHistory from "./components/userHistory";
+
 
 
 function App() {
+  
+  let {state} = useLocation();
+  console.log(state);
+  let navigate = useNavigate();
+  const [user, setUser] = useState('')
+  useEffect(()=>{
+    if (state !== null){
+      setUser(state);
+    }
+  },[state]);
+  const Logout = () =>{
+    setUser('');
+    navigate(`/home`, {state: null});
+  };
+  
   return (
     <div>
       <Navbar bg="dark" variant="dark" expand={false}>
@@ -25,17 +44,20 @@ function App() {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-end flex-grow-1 pe-3">
-              <Nav.Link as = {Link} to="/home" >Home</Nav.Link>
-                <Nav.Link as = {Link} to="/signup" >Signup</Nav.Link>
-                <Nav.Link as ={Link} to="/signin" >Signin</Nav.Link>
-                <NavDropdown title="Dropdown" id="offcanvasNavbarDropdown">
-                  <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action5">
-                    Something else here
-                  </NavDropdown.Item>
-                </NavDropdown>
+                {user ? (
+                    <>
+                      <Nav.Link onClick = {()=>{navigate(`/${user}/workout-history`, {state: user})}}>History</Nav.Link>
+                      <Nav.Link onClick = {()=>{navigate(`/${user}/workout-current`, {state: user})}}>Workout</Nav.Link>
+                      <Nav.Link onClick = {()=>{navigate(`/${user}`, {state: user})}}>Profile</Nav.Link>
+                      <Button variant="outline-danger" onClick={Logout}>Logout</Button>
+                    </>
+                  ):(
+                    <>
+                      <Nav.Link as = {Link} to="/home" >Home</Nav.Link>
+                      <Nav.Link as = {Link} to="/signup" >Signup</Nav.Link>
+                      <Nav.Link as ={Link} to="/signin" >Signin</Nav.Link>
+                    </>
+                  )}
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
@@ -47,6 +69,9 @@ function App() {
             <Route path= "/home" element = {<Home/>}/>
             <Route path = "/signup" element = {<Signup />}/>
             <Route path = "/signin" element = {<Signin/>}/>
+            <Route path ="/:name" element = {<User/>}/>
+            <Route path = "/:name/workout-history" element = {<UserHistory/>}/>
+            <Route path = "/:name/workout-current" element = {<UserCurrent/>}/>
           </Routes>
         </Container>
     </div>

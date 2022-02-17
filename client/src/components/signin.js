@@ -1,32 +1,35 @@
 import {React, useState} from "react";
-import {Form, Button, Container, Alert} from "react-bootstrap";
+import {Form, Button} from "react-bootstrap";
 import WorkoutConns from "../connection/connection";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useNavigate} from "react-router-dom";
+import { useNavigate, useLocation} from "react-router-dom";
+
 
 
 const Signin = () =>{
     let navigate = useNavigate();
+    let location = useLocation()
     const [error, setError] = useState('')
     const errorDiv = 
         <div className = "text-danger">
             {error}
           </div> ;
-    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     
     var user = {
-        email: email,
-        password: password
+        name: name,
+        password: password,
     }
 
     const handleSubmit = event => {
         setError('')
         event.preventDefault();
         WorkoutConns.signin(JSON.stringify(user))
-        .then(response => {
-            console.log(response);
-            navigate(`/${user.name}`);
+        .then(res => {
+            console.log(res);
+            console.log(location);
+            navigate(`/${user.name}`, {state: user.name});
         })
         .catch(e => {
             console.log(e.message);
@@ -39,14 +42,14 @@ const Signin = () =>{
             <div>
                 <Form onSubmit = {handleSubmit}>
                     <Form.Group className="mb-3">
-                    <Form.Label htmlFor="email" >Email</Form.Label>
+                    <Form.Label htmlFor="name" >Name</Form.Label>
                     <Form.Control 
                         as = "input"
                         required
-                        id="email" 
-                        placeholder="Email"
-                        value= {email}
-                        onChange = {(e) => setEmail(e.target.value)} 
+                        id="name" 
+                        placeholder="Name"
+                        value= {name}
+                        onChange = {(e) => setName(e.target.value)} 
                     />
                     </Form.Group>
                     <Form.Group className="mb-3">
