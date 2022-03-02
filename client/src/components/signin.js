@@ -66,7 +66,7 @@ const Signin = () =>{
                     </Form.Group>
                     {errorDiv}
 
-                    <Button type="submit">Sign Up</Button>
+                    <Button type="submit">Sign In</Button>
                 </Form>
             </div>
         </div>

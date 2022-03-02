@@ -78,7 +78,7 @@ exports.addExercises = (req, res, next) => {
         
 
 exports.getWorkouts = (req, res, next) => {
-    Workout.findOne({id: req.params.id}, function(err, result){
+    Workout.findOne({_id: req.params.id}, function(err, result){
         if (err){
            return res.status(500).json({error: err.message});
         }
@@ -136,7 +136,7 @@ exports.updateExercises = (req, res, next) => {
 }
 
 exports.deleteWorkouts = (req, res, next) => {
-    Workout.findOneAndDelete({id: req.query.id}).exec()
+    Workout.findOneAndDelete({_id: req.query.id}).exec()
         .then(response =>{
             res.status(200).json({
                 success: true,
