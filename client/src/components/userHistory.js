@@ -20,10 +20,17 @@ const UserHistory = () =>{
     const [edit_workout, setEdit_Workout] = useState(null);
     const [show5, setShow5] = useState(false);
     const [exercise, setExercise] = useState([]);
+    const [nameSession2, setNameSession2] = useState("")
+    const [date2, setDate2] = useState("")
     const workout = {
         name: location.state,
         date: date,
         nameSession: nameSession
+    }
+    const en_workout= {
+        name: location.state,
+        date: date2,
+        nameSession: nameSession2
     }
 
 
@@ -83,7 +90,7 @@ const UserHistory = () =>{
     };
     const handleUpdate = (e) => {
         e.preventDefault();
-        WorkoutConns.updateWorkout(workout, edit_workout._id)
+        WorkoutConns.updateWorkout(en_workout, edit_workout._id)
             .then(response=>{
                 console.log(response)
             })
@@ -106,8 +113,16 @@ const UserHistory = () =>{
                     console.log(e.message)
                 })
             })
+            WorkoutConns.getAllWorkout()
+                .then(response=>{
+                    setWorkouts(response.data.workouts)
+                })
+                .catch(e=>{
+                    console.log(e.message)
+                })
         
     }
+        
     const handleDelete = (e) => {
         e.preventDefault()
         WorkoutConns.deleteWorkout(e.currentTarget.id)
@@ -141,8 +156,10 @@ const UserHistory = () =>{
     const getEdit_Workout = (id) =>{
         WorkoutConns.getWorkout(id)
             .then(response => {
-                setEdit_Workout(response.data)
-                setExercise(response.data.exercises)
+                setEdit_Workout(response.data);
+                setExercise(response.data.exercises);
+                setNameSession2(response.data.nameSession);
+                setDate2(response.data.date);
             })
             .catch(e=>{
                 console.log(e.message)
@@ -291,7 +308,7 @@ const UserHistory = () =>{
                                             Close
                                         </Button>
                                         <Button variant="primary" type="submit" >
-                                            Search
+                                            Add
                                         </Button>
                                     </Modal.Footer>
                                 </Form>
@@ -381,9 +398,6 @@ const UserHistory = () =>{
                         <Button variant="secondary" onClick={handleClose4}>
                         Close
                         </Button>
-                        <Button variant="primary" onClick={handleClose4}>
-                        Save Changes
-                        </Button>
                     </Modal.Footer>`
                 </Modal>: 
             null}
@@ -393,17 +407,23 @@ const UserHistory = () =>{
                     <Modal.Header closeButton>
                         <Stack direction="horizontal" gap = {2}>
                             <Modal.Title>
-                                <FormControl
-                                defaultValue ={edit_workout.nameSession}
-                                onChange = {e=>setNameSession(e.target.value)}
-                                >
-                                </FormControl>
+                                <Form.Group>
+                                    <FormControl
+                                    defaultValue ={edit_workout.nameSession}
+                                    onChange = {e=>setNameSession2(e.currentTarget.value)}
+                                    >
+                                    </FormControl>
+                                </Form.Group>
+                                
                             </Modal.Title>
-                            <FormControl
-                                defaultValue = {edit_workout.date}
-                                onChange = {e => setDate(e.target.value)}
-                            >
-                            </FormControl>
+                                <Form.Group>
+                                    <FormControl
+                                    defaultValue = {edit_workout.date}
+                                    onChange = {e => setDate2(e.currentTarget.value)}
+                                    >
+                                    </FormControl>  
+                                </Form.Group>
+
                         </Stack>
                         
                     </Modal.Header>
