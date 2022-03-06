@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { signup, signin } = require('./controllers/authController');
-const { getAllWorkouts, getWorkouts, addWorkouts, addExercises, updateWorkouts, updateExercises, deleteWorkouts, deleteExercises} =require('./controllers/workoutController')
+const { getAllWorkouts, getWorkouts, addWorkouts, addExercises, updateWorkouts, updateExercises, deleteWorkouts, deleteExercises, getPrs} =require('./controllers/workoutController')
 
 router.post('/signup', signup);
 router.post('/signin', signin);
