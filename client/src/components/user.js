@@ -1,5 +1,5 @@
 import {React, useEffect, useState} from "react";
-import { Navigate, useLocation} from "react-router-dom";
+import {useNavigate, Navigate, useLocation, Outlet} from "react-router-dom";
 import WorkoutConns from "../connection/connection"
 import {Stack} from "react-bootstrap";
 const User = () => {

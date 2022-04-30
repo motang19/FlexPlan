@@ -1,7 +1,8 @@
 import {React, useState} from "react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useOutletContext} from "react-router-dom";
 import {Button, Form, Table, FormControl, Stack} from "react-bootstrap";
 import WorkoutConns from "../connection/connection";
+import Moment from "react-moment";
 import Exercise from "./exercise"
 
 const UserCurrent = () =>{
