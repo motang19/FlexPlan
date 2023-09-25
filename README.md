@@ -1,4 +1,4 @@
-# Workout-App
+# FlexPlan
 To start the app
 - cd into /server and run nodemon start
 - cd into /client and run npm start
